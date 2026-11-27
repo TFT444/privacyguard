@@ -10,8 +10,10 @@ Catch Wi-Fi attacks and snooping devices on your home network, explained in plai
 ![Tests](https://img.shields.io/badge/tests-13%20passing-brightgreen)
 ![Coverage](https://img.shields.io/badge/detection%20coverage-100%25-brightgreen)
 ![Framework](https://img.shields.io/badge/backend-Flask%203.0-black)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-proprietary-red)
 ![Status](https://img.shields.io/badge/status-in%20development-orange)
+
+**Proprietary and confidential. All rights reserved. Not for distribution.**
 
 </div>
 
@@ -105,13 +107,13 @@ The detection engine is complete with **13 tests and 100% coverage**. See
 
 ---
 
-## Getting started (development)
+## Getting started (internal development)
+
+> Private repository. Access is restricted to the Owner and authorised collaborators.
 
 No hardware is required to run the detection engine and its tests.
 
 ```bash
-# clone and enter
-git clone <your-repo-url> privacyguard
 cd privacyguard
 
 # install
@@ -170,12 +172,14 @@ docs/           build plan + diagrams
 
 ## License
 
-MIT. See [`LICENSE`](LICENSE).
+Proprietary and confidential. All rights reserved. No part of this software may be
+copied, distributed, or commercialised without a written agreement signed by the Owner.
+See [`LICENSE`](LICENSE).
 
 ---
 
 <div align="center">
 
-Built by **Tanvir Farhad** as a final-year Computing project at Ulster University.
+A product by **Tanvir Farhad**. Originated as a final-year Computing project at Ulster University.
 
 </div>
