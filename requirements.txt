@@ -1,0 +1,14 @@
+# Core
+scapy==2.6.1
+Flask==3.0.3
+requests==2.32.3
+
+# QR code generation for ntfy setup
+qrcode[pil]==7.4.2
+
+# OLED display (Raspberry Pi only; harmless to omit on a laptop)
+# luma.oled==3.13.0
+
+# Dev / test
+pytest==8.3.3
+pytest-cov==5.0.0

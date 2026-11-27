@@ -1,0 +1,15 @@
+# PrivacyGuard monitor service (Phase 5). Install to /etc/systemd/system/
+# Enable 24/7 operation: sudo systemctl enable --now privacyguard-monitor
+[Unit]
+Description=PrivacyGuard wireless monitor daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -m privacyguard.monitor.capture
+Restart=always
+RestartSec=5
+User=privacyguard
+
+[Install]
+WantedBy=multi-user.target

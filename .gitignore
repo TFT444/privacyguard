@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# PrivacyGuard runtime data
+*.db
+*.sqlite3
+*.pcap
+oui.txt
+instance/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
