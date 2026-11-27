@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PrivacyGuard</title>
+  <style>
+    :root { --bg:#0f1115; --card:#181b22; --line:#2a2f3a; --text:#e6e8ec; --muted:#9aa0a6; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text);
+           font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    header { background:#11131a; border-bottom:1px solid var(--line);
+             padding:14px 22px; display:flex; align-items:center; gap:10px; }
+    header h1 { font-size:18px; margin:0; letter-spacing:.3px; }
+    header nav { margin-left:auto; color:var(--muted); font-size:14px; }
+    .wrap { max-width:1100px; margin:22px auto; padding:0 18px;
+            display:grid; gap:18px; }
+    .row { display:grid; grid-template-columns:260px 1fr; gap:18px; }
+    .card { background:var(--card); border:1px solid var(--line);
+            border-radius:12px; padding:18px; }
+    .score { text-align:center; }
+    .score .num { font-size:64px; font-weight:700; line-height:1; }
+    .score .label { color:var(--muted); font-size:13px; text-transform:uppercase;
+                    letter-spacing:1px; }
+    .status { margin-top:10px; font-weight:600; }
+    .SAFE { color:#34d399; } .WARNING { color:#fbbf24; } .DANGER { color:#f87171; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); }
+    th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; }
+    .sev { font-weight:700; }
+    .sev.CRITICAL { color:#f87171; } .sev.HIGH { color:#fb923c; }
+    .sev.MEDIUM { color:#fbbf24; } .sev.LOW { color:#60a5fa; }
+    h2 { font-size:14px; color:var(--muted); text-transform:uppercase;
+         letter-spacing:1px; margin:0 0 12px; }
+    .muted { color:var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PrivacyGuard</h1>
+    <nav>Home Network Security</nav>
+  </header>
+
+  <div class="wrap">
+    <div class="row">
+      <div class="card score">
+        <div class="label">Home Safety Score</div>
+        <div class="num" id="score">{{ score }}</div>
+        <div class="status" id="status"></div>
+      </div>
+
+      <div class="card">
+        <h2>Recent Alerts</h2>
+        <table>
+          <thead>
+            <tr><th>Time</th><th>Type</th><th>Severity</th><th>Device</th><th>Description</th></tr>
+          </thead>
+          <tbody id="alerts">
+            {% for a in alerts %}
+            <tr>
+              <td class="muted">{{ a.timestamp }}</td>
+              <td>{{ a.alert_type }}</td>
+              <td class="sev {{ a.severity }}">{{ a.severity }}</td>
+              <td class="muted">{{ a.device_mac }}</td>
+              <td>{{ a.description }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Device Inventory</h2>
+      <table>
+        <thead>
+          <tr><th>MAC</th><th>IP</th><th>Manufacturer</th><th>First Seen</th><th>Last Seen</th></tr>
+        </thead>
+        <tbody id="devices">
+          {% for d in devices %}
+          <tr>
+            <td>{{ d.mac_address }}</td>
+            <td class="muted">{{ d.ip_address or "-" }}</td>
+            <td>{{ d.manufacturer or "Unknown" }}</td>
+            <td class="muted">{{ d.first_seen }}</td>
+            <td class="muted">{{ d.last_seen }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function statusFor(s) { return s >= 80 ? "SAFE" : s >= 50 ? "WARNING" : "DANGER"; }
+    function paintStatus(s) {
+      const el = document.getElementById("status");
+      const label = statusFor(s);
+      el.textContent = label;
+      el.className = "status " + label;
+    }
+    paintStatus(Number(document.getElementById("score").textContent));
+
+    // Live updates via Server-Sent Events
+    const es = new EventSource("/api/stream");
+    es.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      document.getElementById("score").textContent = data.score;
+      paintStatus(data.score);
+    };
+  </script>
+</body>
+</html>
